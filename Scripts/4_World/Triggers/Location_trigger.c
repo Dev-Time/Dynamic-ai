@@ -4,6 +4,7 @@ class Location_Trigger: Spatial_TriggerBase
     ref Spatial_Location location;
     Notification_Trigger notif_trigger;
     int playersInLocation;
+    bool checked;
 
     void Spatial_SetData(Spatial_Location Location, Notification_Trigger b)
     {
@@ -13,13 +14,14 @@ class Location_Trigger: Spatial_TriggerBase
       TriggerLoadout = Location.Spatial_ZoneLoadout;
       TriggerFaction = Location.Spatial_Faction;
       playersInLocation = 0;
+      checked = false;
     } //changed to class instead of individuals
     override void SpawnCheck()
     {
       if (!CanSpawn()) return;
 
-      if (playersInLocation > 0) return;
-      playersInLocation = playersInLocation + 1;
+      if (checked) return;
+      checked = true;
 
       int m_Groupid = Math.RandomIntInclusive(5001, 10000);
       SpatialDebugPrint("LocationID: " + m_Groupid);
@@ -45,6 +47,7 @@ class Location_Trigger: Spatial_TriggerBase
       PlayerBase player = PlayerBase.Cast(insider.GetObject());
       if (player && location)
       {
+        playersInLocation = playersInLocation + 1;
         player.Spatial_InLocation(true, location.Spatial_HuntMode);
       } 
       super.Enter(insider);
@@ -56,9 +59,15 @@ class Location_Trigger: Spatial_TriggerBase
       if (player)
       {
         player.Spatial_InLocation(false, 0);
+
         if (playersInLocation > 0)
         {
           playersInLocation = playersInLocation - 1;
+        }
+
+        if (playersInLocation = 0)
+        {
+          checked = false;
         }
       }
       super.Leave(insider);
