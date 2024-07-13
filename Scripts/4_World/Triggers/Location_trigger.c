@@ -65,7 +65,7 @@ class Location_Trigger: Spatial_TriggerBase
           playersInLocation = playersInLocation - 1;
         }
 
-        if (playersInLocation = 0)
+        if (playersInLocation == 0)
         {
           checked = false;
         }
