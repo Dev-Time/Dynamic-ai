@@ -3,7 +3,7 @@ class Location_Trigger: Spatial_TriggerBase
 {
     ref Spatial_Location location;
     Notification_Trigger notif_trigger;
-    
+    int playersInLocation;
 
     void Spatial_SetData(Spatial_Location Location, Notification_Trigger b)
     {
@@ -12,10 +12,14 @@ class Location_Trigger: Spatial_TriggerBase
       TriggerName = Location.Spatial_Name;
       TriggerLoadout = Location.Spatial_ZoneLoadout;
       TriggerFaction = Location.Spatial_Faction;
+      playersInLocation = 0;
     } //changed to class instead of individuals
     override void SpawnCheck()
     {
       if (!CanSpawn()) return;
+
+      if (playersInLocation > 0) return;
+      playersInLocation = playersInLocation + 1;
 
       int m_Groupid = Math.RandomIntInclusive(5001, 10000);
       SpatialDebugPrint("LocationID: " + m_Groupid);
@@ -52,6 +56,10 @@ class Location_Trigger: Spatial_TriggerBase
       if (player)
       {
         player.Spatial_InLocation(false, 0);
+        if (playersInLocation > 0)
+        {
+          playersInLocation = playersInLocation - 1;
+        }
       }
       super.Leave(insider);
     }
