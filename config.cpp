@@ -25,17 +25,17 @@ class CfgMods
 			class gameScriptModule
 			{
 				value = "";
-				files[] = {"dolphin/DayZ-Expansion-AI-Dynamic/Scripts/3_Game"};
+				files[] = {"Dynamic-ai/Scripts/3_Game"};
 			};
 			class worldScriptModule
 			{
 				value = "";
-				files[] = {"dolphin/DayZ-Expansion-AI-Dynamic/Scripts/4_World"};
+				files[] = {"Dynamic-ai/Scripts/4_World"};
 			};
 			class missionScriptModule
 			{
 				value = "";
-				files[] = {"SafeZone/scripts/Common","dolphin/DayZ-Expansion-AI-Dynamic/Scripts/5_Mission"};
+				files[] = {"SafeZone/scripts/Common","Dynamic-ai/Scripts/5_Mission"};
 			};
 		};
 	};
