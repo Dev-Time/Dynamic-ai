@@ -335,8 +335,8 @@ class SpatialSettings
     Data.Point.Insert(new Spatial_Point("West", 0, 100, {"WestLoadout.json"}, 0, 5, 1, "West", 1, 0.5, 0.25, 0.66, false, "0.0 1.0 0.0"));
     Data.Point.Insert(new Spatial_Point("Civilian", 1, 150, {"HumanLoadout.json", "NBCLoadout.json"}, 0, 0, 0, "Civilian", 1, 0.5, 0.25, 0.66, false, "0.0 1.0 0.0"));
 
-    Data.Location.Insert(new Spatial_Location("Location1", 50, "NBCLoadout.json", 0, 4, 6, "East", 1, 0.5, 0.25, 0.66, 5, 0, false, "0.0 1.0 0.0", {"0 1 0"}));
-    Data.Location.Insert(new Spatial_Location("Location2", 50, "NBCLoadout.json", 0, 4, 6, "East", 1, 0.5, 0.25, 0.66, 5, 0, false, "0.0 1.0 0.0", {"0 1 0"}));
+    Data.Location.Insert(new Spatial_Location("Location1", 50, 25, "NBCLoadout.json", 0, 4, 6, "East", 1, 0.5, 0.25, 0.66, 5, 0, false, "0.0 1.0 0.0", {"0 1 0"}));
+    Data.Location.Insert(new Spatial_Location("Location2", 50, 25, "NBCLoadout.json", 0, 4, 6, "East", 1, 0.5, 0.25, 0.66, 5, 0, false, "0.0 1.0 0.0", {"0 1 0"}));
 
     Data.Audio.Insert(new Spatial_Audio("Audio1", 50, "NBCLoadout.json", 0, 4, 6, "East", 1, 0.5, 0.25, 0.66, 5, 3, 0, false, "0.0 1.0 0.0", {"0 1 0"}));
     Data.Audio.Insert(new Spatial_Audio("Audio2", 50, "NBCLoadout.json", 0, 4, 6, "East", 1, 0.5, 0.25, 0.66, 5, 3, 0, false, "0.0 1.0 0.0", {"0 1 0"}));
@@ -512,6 +512,7 @@ class Spatial_Location
 {
   string Spatial_Name;
   float  Spatial_TriggerRadius;
+  float Spatial_MinRadius;
   string  Spatial_ZoneLoadout;
   int Spatial_MinCount, Spatial_MaxCount;
   int  Spatial_HuntMode;
@@ -523,11 +524,12 @@ class Spatial_Location
   vector  Spatial_TriggerPosition; 
   ref TVectorArray Spatial_SpawnPosition;
 
-  void Spatial_Location(string a, float b, string c, int d, int e, int f, string g, int h, float i, float j, float k, float l, int m, bool n, vector o, TVectorArray p ) // one left
+  void Spatial_Location(string a, float b, float q, string c, int d, int e, int f, string g, int h, float i, float j, float k, float l, int m, bool n, vector o, TVectorArray p ) // one left
   {
     //one left
     Spatial_Name = a;
     Spatial_TriggerRadius = b;
+    Spatial_MinRadius = q;
     Spatial_ZoneLoadout = c;
     Spatial_MinCount = d;
     Spatial_MaxCount = e;
