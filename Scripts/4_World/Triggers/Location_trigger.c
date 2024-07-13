@@ -79,7 +79,7 @@ class Location_Trigger: Spatial_TriggerBase
       TVectorArray waypoints;
       eAISpatialPatrol DynPatrol;
       int mindistradius, maxdistradius, despawnradius;
-      mindistradius = 0;
+      mindistradius = location.Spatial_MinRadius;
       maxdistradius = 1000;
       despawnradius = 1200;
 
