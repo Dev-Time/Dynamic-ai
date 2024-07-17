@@ -5,6 +5,7 @@ class Location_Trigger: Spatial_TriggerBase
     Notification_Trigger notif_trigger;
     int playersInLocation;
     bool checked;
+	bool cooldown;
 
     void Spatial_SetData(Spatial_Location Location, Notification_Trigger b)
     {
@@ -15,6 +16,7 @@ class Location_Trigger: Spatial_TriggerBase
       TriggerFaction = Location.Spatial_Faction;
       playersInLocation = 0;
       checked = false;
+	  cooldown = false;
     } //changed to class instead of individuals
     override void SpawnCheck()
     {
@@ -24,12 +26,22 @@ class Location_Trigger: Spatial_TriggerBase
         return;
       }
 
+	  if (cooldown)
+      {
+        SpatialDebugPrint("Location on cooldown, resetting timer: " + location.Spatial_Name);
+        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(Cooldown_timer);
+        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(Cooldown_timer, location.Spatial_Timer, false);
+        return;
+      }
+
       if (checked)
       {
         SpatialDebugPrint("Location already checked: " + location.Spatial_Name);
         return;
       }
       checked = true;
+	  cooldown = true;
+      GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(Cooldown_timer, location.Spatial_Timer, false);
 
       int m_Groupid = Math.RandomIntInclusive(5001, 10000);
       SpatialDebugPrint("LocationID: " + m_Groupid);
@@ -164,5 +176,10 @@ class Location_Trigger: Spatial_TriggerBase
         if (player) Spatial_message(player, count);
       }
     }
+
+	void Cooldown_timer()
+    {
+      cooldown = false;
+    } //calllater timer for cooldown
 
 }
