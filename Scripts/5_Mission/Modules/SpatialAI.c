@@ -436,8 +436,8 @@ class SpatialAI {
                 if (!location) continue;
                 Location_Trigger location_trigger = Location_Trigger.Cast(GetGame().CreateObjectEx("Location_Trigger", location.Spatial_TriggerPosition, ECE_NONE));
                 Notification_Trigger notification_trigger = Notification_Trigger.Cast(GetGame().CreateObjectEx("Notification_Trigger", location.Spatial_TriggerPosition, ECE_NONE));
-                location_trigger.SetCollisionCylinder(location.Spatial_TriggerRadius, location.Spatial_TriggerRadius / 2);
-                notification_trigger.SetCollisionCylinder(location.Spatial_TriggerRadius * 2, location.Spatial_TriggerRadius);
+                location_trigger.SetCollisionCylinder(location.Spatial_TriggerRadius, 1000);
+                notification_trigger.SetCollisionCylinder(location.Spatial_TriggerRadius * 2, 1000);
                 SetNotificationLocation(location_trigger, location);
                 vector move1 = location.Spatial_TriggerPosition;
                 move1[1] = move1[1] - (location.Spatial_TriggerRadius / 4);

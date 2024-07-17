@@ -3,7 +3,8 @@ class Location_Trigger: Spatial_TriggerBase
 {
     ref Spatial_Location location;
     Notification_Trigger notif_trigger;
-    
+    int playersInLocation;
+    bool checked;
 
     void Spatial_SetData(Spatial_Location Location, Notification_Trigger b)
     {
@@ -12,10 +13,23 @@ class Location_Trigger: Spatial_TriggerBase
       TriggerName = Location.Spatial_Name;
       TriggerLoadout = Location.Spatial_ZoneLoadout;
       TriggerFaction = Location.Spatial_Faction;
+      playersInLocation = 0;
+      checked = false;
     } //changed to class instead of individuals
     override void SpawnCheck()
     {
-      if (!CanSpawn()) return;
+      if (!CanSpawn())
+      {
+        SpatialDebugPrint("Location can't spawn: " + location.Spatial_Name);
+        return;
+      }
+
+      if (checked)
+      {
+        SpatialDebugPrint("Location already checked: " + location.Spatial_Name);
+        return;
+      }
+      checked = true;
 
       int m_Groupid = Math.RandomIntInclusive(5001, 10000);
       SpatialDebugPrint("LocationID: " + m_Groupid);
@@ -41,6 +55,8 @@ class Location_Trigger: Spatial_TriggerBase
       PlayerBase player = PlayerBase.Cast(insider.GetObject());
       if (player && location)
       {
+        SpatialDebugPrint("Player entered location: " + location.Spatial_Name);
+        playersInLocation = playersInLocation + 1;
         player.Spatial_InLocation(true, location.Spatial_HuntMode);
       } 
       super.Enter(insider);
@@ -51,7 +67,19 @@ class Location_Trigger: Spatial_TriggerBase
       PlayerBase player = PlayerBase.Cast(insider.GetObject());
       if (player)
       {
+        SpatialDebugPrint("Player left location: " + location.Spatial_Name);
         player.Spatial_InLocation(false, 0);
+
+        if (playersInLocation > 0)
+        {
+          playersInLocation = playersInLocation - 1;
+        }
+
+        if (playersInLocation == 0)
+        {
+          SpatialDebugPrint("Marking location as unchecked: " + location.Spatial_Name);
+          checked = false;
+        }
       }
       super.Leave(insider);
     }
