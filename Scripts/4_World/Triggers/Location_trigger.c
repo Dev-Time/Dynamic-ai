@@ -18,9 +18,17 @@ class Location_Trigger: Spatial_TriggerBase
     } //changed to class instead of individuals
     override void SpawnCheck()
     {
-      if (!CanSpawn()) return;
+      if (!CanSpawn())
+      {
+        SpatialDebugPrint("Location can't spawn: " + location.Spatial_Name);
+        return;
+      }
 
-      if (checked) return;
+      if (checked)
+      {
+        SpatialDebugPrint("Location already checked: " + location.Spatial_Name);
+        return;
+      }
       checked = true;
 
       int m_Groupid = Math.RandomIntInclusive(5001, 10000);
@@ -47,6 +55,7 @@ class Location_Trigger: Spatial_TriggerBase
       PlayerBase player = PlayerBase.Cast(insider.GetObject());
       if (player && location)
       {
+        SpatialDebugPrint("Player entered location: " + location.Spatial_Name);
         playersInLocation = playersInLocation + 1;
         player.Spatial_InLocation(true, location.Spatial_HuntMode);
       } 
@@ -58,6 +67,7 @@ class Location_Trigger: Spatial_TriggerBase
       PlayerBase player = PlayerBase.Cast(insider.GetObject());
       if (player)
       {
+        SpatialDebugPrint("Player left location: " + location.Spatial_Name);
         player.Spatial_InLocation(false, 0);
 
         if (playersInLocation > 0)
@@ -67,6 +77,7 @@ class Location_Trigger: Spatial_TriggerBase
 
         if (playersInLocation == 0)
         {
+          SpatialDebugPrint("Marking location as unchecked: " + location.Spatial_Name);
           checked = false;
         }
       }
